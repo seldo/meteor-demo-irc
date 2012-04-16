@@ -1,5 +1,5 @@
 <head>
-  <title>seldotest</title>
+  <title>IRCsome</title>
 </head>
 
 <body>
@@ -7,6 +7,8 @@
   {{> you}}
   {{> them}}
   {{> chat}}
+  
+  {{> nuke}}
 </body>
 
 <template name="you">
@@ -17,7 +19,6 @@
     <p>
         <label>Your name: <input type="text" id="namebox"/></label>
         <input type="button" name="set" value="set"/>
-        <input type="button" name="ignore" value="ignore"/>
     </p>
     {{/if}}
   </div>
@@ -25,6 +26,7 @@
 
 <template name="them">
     <div id="them">
+        <h2>Chatters</h2>
         <ul>
             {{#each users}}
             <li>{{username}}</li>
@@ -45,5 +47,11 @@
                 <input type="text" size="100" name="msg" id="msg">
             </form>
         </div>
+    </div>
+</template>
+
+<template name="nuke">
+    <div id="nuke">
+        <input id="nukeit" type="button" value="Nuke it">
     </div>
 </template>

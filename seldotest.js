@@ -1,6 +1,7 @@
 if (Meteor.is_client) {
     
   Messages = new Meteor.Collection("messages");
+  People = new Meteor.Collection("people");
     
   /*
   Template.you.greeting = function () {
@@ -14,9 +15,10 @@ if (Meteor.is_client) {
   //// you
   
   Template.you.firstname = function() {
-    var firstname = Session.get('firstname');
-    if (_.isEmpty(firstname)) firstname = 'new user';
-    return firstname;
+    //var firstname = Session.get('firstname');
+    //if (_.isEmpty(firstname)) firstname = 'new user';
+    //return firstname;
+    return Session.get('firstname');
   }
 
   Template.you.events = {
@@ -33,24 +35,31 @@ if (Meteor.is_client) {
   //// them
   
   Template.them.users = function() {
-      People = new Meteor.Collection("people");
       return People.find({});
   }
   
   //// chat
   
   Template.chat.messages = function() {
-      return Messages.find({},{
+      var messages = Messages.find({},{
          sort: ["created","desc"]
-      });
+      }).fetch();
+      
+      var msgSlice = messages.slice(-10);
+      //messages.reverse();
+      return msgSlice;
+      //return messages;
   }
   
   Template.chat.events = {
     'submit form[name="msgform"]': function(e) {
         e.preventDefault();
+        if (_.isEmpty(Session.get('firstname'))) {
+            return;   
+        }
         var msgInput = document.getElementById('msg');
         var msg = msgInput.value;
-        var created = (new Date()).toUTCString();
+        var created = (new Date()).getTime();
         console.log("message: " + msg);
         console.log("created: " + created);
         Messages.insert({
@@ -60,6 +69,15 @@ if (Meteor.is_client) {
         });
         msgInput.value = null;
     }
+  }
+  
+  // nuke (resets everything)
+  Template.nuke.events = {
+      'click input': function(e) {
+          console.log('nuking all messages');
+          Messages.remove({});
+          People.remove({});
+      }
   }
   
 }
