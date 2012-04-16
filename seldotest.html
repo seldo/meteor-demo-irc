@@ -1,0 +1,49 @@
+<head>
+  <title>seldotest</title>
+</head>
+
+<body>
+  <h1>IRCsome</h1>
+  {{> you}}
+  {{> them}}
+  {{> chat}}
+</body>
+
+<template name="you">
+  <div class="you">
+    {{#if firstname}}
+        Hi, {{firstname}}!
+    {{else}}
+    <p>
+        <label>Your name: <input type="text" id="namebox"/></label>
+        <input type="button" name="set" value="set"/>
+        <input type="button" name="ignore" value="ignore"/>
+    </p>
+    {{/if}}
+  </div>
+</template>
+
+<template name="them">
+    <div id="them">
+        <ul>
+            {{#each users}}
+            <li>{{username}}</li>
+            {{/each}}
+        </ul>
+    </div>
+</template>
+
+<template name="chat">
+    <div id="chat">
+        <ul>
+            {{#each messages}}
+            <li><b>{{username}}</b>: {{message}}
+            {{/each}}
+        </ul>
+        <div id="newmsg">
+            <form method="post" name="msgform">
+                <input type="text" size="100" name="msg" id="msg">
+            </form>
+        </div>
+    </div>
+</template>
